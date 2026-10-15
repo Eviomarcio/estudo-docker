@@ -2,6 +2,72 @@
 
 Este guia explica por que os dados de um container são efêmeros e apresenta duas formas de persistência no Docker: **volumes** e **bind mounts**.
 
+## Mapa mental
+
+```mermaid
+mindmap
+  root((Persistência de dados no Docker))
+    Containers efêmeros
+      Imagem
+        Camadas somente leitura
+      Container
+        Camada de leitura e escrita
+        Dados perdidos após a remoção
+      OverlayFS
+        Combina as camadas
+        Compartilha a imagem base
+    Bind mounts
+      Diretório ou arquivo do host
+      Sintaxe
+        Opção -v
+        Opção --mount
+      Vantagens
+        Edição direta pelo host
+        Atualização em tempo real
+        Útil no desenvolvimento
+      Cuidados
+        Caminhos absolutos
+        Permissões
+        Dependência do host
+        Acesso a arquivos sensíveis
+    Volumes
+      Gerenciados pelo Docker
+      Operações
+        docker volume create
+        docker volume ls
+        docker volume inspect
+        docker volume rm
+      Tipos
+        Locais
+        Remotos
+      Vantagens
+        Maior portabilidade
+        Melhor isolamento
+        Recomendados para produção
+    Montagem em containers
+      Volume nomeado
+        volume:destino
+      Bind mount
+        host:destino
+      Copiar arquivos
+        docker cp
+    Escolha da solução
+      Desenvolvimento
+        Bind mounts
+        Código e configurações
+      Produção
+        Volumes
+        Bancos de dados
+        Dados da aplicação
+    Proteção dos dados
+      Backup
+        Container temporário
+        BusyBox e tar
+      Restauração
+        Volume de destino
+        Extração do arquivo
+```
+
 ## 1. Natureza efêmera dos containers
 
 Por padrão, as alterações realizadas no sistema de arquivos de um container ficam vinculadas àquele container. Quando ele é removido, os dados gravados em sua camada de escrita também são perdidos.
